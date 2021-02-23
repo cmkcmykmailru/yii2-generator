@@ -1,0 +1,39 @@
+{
+  "name": "grigor/yii2-generator",
+  "description": "generator rest api",
+  "type": "yii2-extension",
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "keywords": [
+    "yii2",
+    "extension"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "grigor",
+      "email": "cmk.cmyk@mail.ru"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "yiisoft/yii2": "~2.0.0",
+    "psr/container": "^1.0.0",
+    "grigor/scanner": "dev-master",
+    "doctrine/annotations": "^1.10.4",
+    "ramsey/uuid": "^4.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0@dev",
+    "johnkary/phpunit-speedtrap": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "grigor\\generator\\": "src",
+      "grigorTest\\generator\\": "tests"
+    }
+  },
+  "scripts": {
+    "tests": "php ./vendor/bin/phpunit --colors=always tests"
+  }
+}
