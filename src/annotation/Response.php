@@ -4,12 +4,13 @@
 namespace grigor\generator\annotation;
 
 use grigor\generator\exceptions\InvalidConfigurationException;
+use grigor\generator\scanner\visitor\ServiceExtractor;
 
 /**
  * @Annotation
  * @Target("METHOD")
  */
-final class Response implements ServiceExporter
+final class Response implements ServiceExtractor
 {
     /** @var string */
     public $statusCode;
@@ -25,7 +26,7 @@ final class Response implements ServiceExporter
         $this->statusCode = $values['statusCode'];
     }
 
-    public function export(): array
+    public function extract(): array
     {
         return [
             'response' => (int)$this->statusCode

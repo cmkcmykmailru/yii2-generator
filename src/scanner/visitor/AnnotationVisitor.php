@@ -4,40 +4,33 @@ namespace grigor\generator\scanner\visitor;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use grigor\generator\writer\SettingsWriter;
+use grigor\generator\writer\SettingDto;
+use grigor\generator\writer\SettingsManager;
 use ReflectionClass;
 use Scanner\Driver\Parser\NodeFactory;
 use Scanner\Strategy\AbstractScanStrategy;
-use Scanner\Strategy\ScanVisitor;
 
-class RESTfulBuilder implements ScanVisitor
+class AnnotationVisitor extends Visitor
 {
     private $reader;
-    private $start;
-    private $counter = 0;
-    private $settingsWriter;
+    private $settingsManager;
+    private $dtoPrototype;
 
     /**
-     * RESTfulBuilder constructor.
-     * @param $settingsWriter
+     * AnnotationVisitor constructor.
+     * @param $settingsManager
      */
-    public function __construct(SettingsWriter $settingsWriter)
+    public function __construct(SettingsManager $settingsManager)
     {
         AnnotationRegistry::registerLoader('class_exists');
         $this->reader = new AnnotationReader();
-        $this->settingsWriter = $settingsWriter;
-    }
-
-    public function scanStarted(AbstractScanStrategy $scanStrategy, $detect): void
-    {
-        $this->start = microtime(true);
+        $this->settingsManager = $settingsManager;
+        $this->dtoPrototype = new SettingDto();
     }
 
     public function scanCompleted(AbstractScanStrategy $scanStrategy, $detect): void
     {
-        $this->settingsWriter->write();
-        echo 'Время выполнения скрипта: ' . (microtime(true) - $this->start) . ' сек.' . PHP_EOL;
-        echo 'Обработано файлов: ' . $this->counter . 'шт.' . PHP_EOL;
+        $this->settingsManager->flush();
     }
 
     /**
@@ -49,21 +42,20 @@ class RESTfulBuilder implements ScanVisitor
      */
     public function visitLeaf(AbstractScanStrategy $scanStrategy, NodeFactory $factory, $detect, $found, $reflectionClass = null): void
     {
-        $this->counter++;
         $methods = $reflectionClass->getMethods();
         $className = $reflectionClass->getName();
-
         foreach ($methods as $method) {
             $classAnnotations = $this->reader->getMethodAnnotations($method);
             if (!empty($classAnnotations)) {
                 $methodName = $method->getName();
-                $this->settingsWriter->addSettings($classAnnotations, $className, $methodName);
+                $this->addSetting($classAnnotations, $className, $methodName);
             }
         }
     }
 
-    public function visitNode(AbstractScanStrategy $scanStrategy, NodeFactory $factory, $detect, $found, $data = null): void
+    protected function addSetting(array $classAnnotations, string $className, string $methodName): void
     {
-
+        $this->settingsManager->addSetting($this->dtoPrototype->cloneWithData($classAnnotations, $className, $methodName));
     }
+
 }

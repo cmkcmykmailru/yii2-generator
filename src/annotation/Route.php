@@ -3,12 +3,13 @@
 namespace grigor\generator\annotation;
 
 use grigor\generator\exceptions\InvalidConfigurationException;
+use grigor\generator\scanner\visitor\RuleExtractor;
 
 /**
  * @Annotation
  * @Target("METHOD")
  */
-final class Route implements RuleExporter
+final class Route implements RuleExtractor
 {
     /** @var string */
     public $url;
@@ -45,7 +46,7 @@ final class Route implements RuleExporter
         $this->alias = $values['alias'];
     }
 
-    public function export(): array
+    public function extract(): array
     {
         return [
             'pattern' => $this->url,

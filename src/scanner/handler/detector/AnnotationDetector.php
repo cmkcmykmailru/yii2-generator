@@ -2,6 +2,8 @@
 
 namespace grigor\generator\scanner\handler\detector;
 
+use ReflectionClass;
+use ReflectionException;
 use Scanner\Driver\Parser\NodeFactory;
 use Scanner\Strategy\TargetHandler;
 
@@ -19,6 +21,7 @@ class AnnotationDetector implements TargetHandler
 
     public function handle(NodeFactory $factory, $detect, $found)
     {
+        $this->counter++;
         $phpFile = $factory->createLeaf($detect, $found);
         $info = $phpFile->getClassInfo();
         if (empty($info)) {
@@ -31,9 +34,12 @@ class AnnotationDetector implements TargetHandler
         }
         $uses = $info['use'];
         foreach ($uses as $use) {
-            if (in_array(ltrim($use, '\\'), self::ANNOTATIONS_MAP)) {
+            if (in_array(ltrim($use, '\\'), self::ANNOTATIONS_MAP, true)) {
                 $phpFile->revokeAllSupports();
-                return new \ReflectionClass($info['class']);
+                try {
+                    return new ReflectionClass($info['class']);
+                } catch (ReflectionException $e) {
+                }
             }
         }
         $phpFile->revokeAllSupports();

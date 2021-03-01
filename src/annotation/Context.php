@@ -3,12 +3,13 @@
 namespace grigor\generator\annotation;
 
 use grigor\generator\exceptions\InvalidConfigurationException;
+use grigor\generator\scanner\visitor\ServiceExtractor;
 
 /**
  * @Annotation
  * @Target("METHOD")
  */
-class Context implements ServiceExporter
+class Context implements ServiceExtractor
 {
     /** @phpstan-var list<string> */
     public $value;
@@ -24,7 +25,7 @@ class Context implements ServiceExporter
         $this->value = $values['value'];
     }
 
-    public function export(): array
+    public function extract(): array
     {
         return [
             'context' => $this->value

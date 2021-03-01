@@ -3,12 +3,13 @@
 namespace grigor\generator\annotation;
 
 use grigor\generator\exceptions\InvalidConfigurationException;
+use grigor\generator\scanner\visitor\ServiceExtractor;
 
 /**
  * @Annotation
  * @Target("METHOD")
  */
-class Serializer implements ServiceExporter
+class Serializer implements ServiceExtractor
 {
     /** @phpstan-var list<string> */
     public $value;
@@ -24,7 +25,7 @@ class Serializer implements ServiceExporter
         $this->value = $values['value'];
     }
 
-    public function export(): array
+    public function extract(): array
     {
         return [
             'serializer' => $this->value
