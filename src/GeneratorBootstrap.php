@@ -18,6 +18,7 @@ use Scanner\Scanner;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
+use yii\di\Container;
 use yii\di\Instance;
 
 class GeneratorBootstrap implements BootstrapInterface
@@ -30,8 +31,8 @@ class GeneratorBootstrap implements BootstrapInterface
                 Yii::$app->params['serviceDirectoryPath']), DIRECTORY_SEPARATOR
             ) . DIRECTORY_SEPARATOR;
 
-        $container->setSingleton(ContainerInterface::class, function () {
-            return new YiiContainerAdapter();
+        $container->setSingleton(ContainerInterface::class, function (Container $container) {
+            return new YiiContainerAdapter($container);
         });
 
         $container->setSingleton(AnnotationDetector::class, AnnotationDetector::class);
@@ -41,7 +42,6 @@ class GeneratorBootstrap implements BootstrapInterface
         ]);
 
         $container->setSingleton(SettingFactory::class, FileSettingFactory::class);
-
 
         $container->setSingleton(SettingsRepository::class, DefaultSettingRepository::class);
 

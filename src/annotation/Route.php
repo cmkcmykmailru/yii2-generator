@@ -41,9 +41,20 @@ final class Route implements RuleExtractor
         if (!is_string($values['url'])) {
             throw new InvalidConfigurationException('The value "url" must be a string.');
         }
+        $this->assertValueString($values['methods']);
+
         $this->url = $values['url'];
         $this->methods = $values['methods'];
         $this->alias = $values['alias'];
+    }
+
+    private function assertValueString(array $values): void
+    {
+        foreach ($values as $value) {
+            if (!is_string($value)) {
+                throw new InvalidConfigurationException('Route.values must be strings.');
+            }
+        }
     }
 
     public function extract(): array

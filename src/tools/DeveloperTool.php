@@ -24,7 +24,8 @@ class DeveloperTool
         $apiManageService = new ApiManageService(
             new Scanner([
                 'factories' => [
-                    AnnotationDetector::class => function (ContainerInterface $container, $requestedName) use ($annotationDetector) {
+                    AnnotationDetector::class => function (ContainerInterface $container, $requestedName)
+                    use ($annotationDetector) {
                         return $annotationDetector;
                     },
                 ]
@@ -32,7 +33,8 @@ class DeveloperTool
             new DefaultSettingsManager(
                 new FileSettingFactory($serviceFolder),
                 new DefaultSettingRepository(),
-                $rulesPath),
+                $rulesPath
+            ),
             new AnnotationSearchSettings(),
             $annotationDetector
         );

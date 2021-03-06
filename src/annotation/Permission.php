@@ -23,7 +23,17 @@ class Permission implements ServiceExtractor
         if (empty($values['value'])) {
             throw new InvalidConfigurationException('The value "permissions" must not be empty.');
         }
+        $this->assertValueString($values['value']);
         $this->value = $values['value'];
+    }
+
+    private function assertValueString(array $values): void
+    {
+        foreach ($values as $value) {
+            if (!is_string($value)) {
+                throw new InvalidConfigurationException('Permissions.values must be strings.');
+            }
+        }
     }
 
     public function extract(): array
