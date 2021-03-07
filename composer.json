@@ -18,14 +18,14 @@
     "php": ">=7.4",
     "yiisoft/yii2": "~2.0.0",
     "psr/container": "^1.0.0",
-    "grigor/scanner": "dev-master",
+    "grigor/scanner": "1.0.0",
     "doctrine/annotations": "^1.10.4",
     "ramsey/uuid": "^4.1"
   },
   "require-dev": {
     "yidas/yii2-composer-bower-skip": "~2.0.0",
     "yiisoft/yii2-bootstrap": "~2.0.0",
-    "phpunit/phpunit": "^10.0@dev"
+    "phpunit/phpunit": "8.5.x-dev"
   },
   "autoload": {
     "psr-4": {
