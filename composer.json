@@ -3,7 +3,7 @@
   "description": "generator rest api",
   "type": "yii2-extension",
   "prefer-stable": true,
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "keywords": [
     "yii2",
     "extension"
