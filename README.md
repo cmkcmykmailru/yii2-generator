@@ -12,13 +12,13 @@ yii2-generator
 Запустите команду
 
 ```
-php composer.phar require --prefer-dist grigor/yii2-generator "*"
+php composer.phar require --prefer-dist grigor/yii2-generator "1.0.2"
 ```
 
 или добавьте в composer.json
 
 ```
-"grigor/yii2-generator": "*",
+"grigor/yii2-generator": "^1.0.2",
 ```
 
 Процесс настройки описан в расширении [yii2-rest](https://github.com/cmkcmykmailru/yii2-rest).
